@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>search</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar debounce="500" color="light"
+    (ionChange)="search($event)"
+    placeholder="Enter Keyword...">
+
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-list *ngIf="filteredproducts.length>0">
+          <ion-item *ngFor="let produ of filteredproducts">
+            <ion-thumbnail>
+              <ion-img [src]="produ.images[0].src" alt="{{produ.name}}"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h4>{{produ.name}}</h4>
+              <ion-text>
+                <p>
+                  {{produ.price | currency:"USD"}}
+                </p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <!-- show skeleton text -->
+        <ion-list *ngIf="showSkeleton">
+          <ion-item *ngFor="let produ of [].constructor(5)">
+            <ion-thumbnail>
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <h4><ion-skeleton-text animated style="width: 60%;"></ion-skeleton-text></h4>
+              <ion-text>
+                <p>
+                  <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+                </p>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+<!-- no item -->
+        <ion-list *ngIf="filteredproducts.length<=0 && touched" lines="none">
+          <ion-item>
+            <ion-label>
+              <h3>No Product Found</h3>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -9,4 +9,9 @@ export class TabsPage {
 
   constructor() {}
 
+  Logout(){
+    console.log("loggedout done");
+
+  }
+
 }
