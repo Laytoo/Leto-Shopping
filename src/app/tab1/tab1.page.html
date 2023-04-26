@@ -14,7 +14,8 @@
      </ion-list>
   </ion-content>
 </ion-menu> -->
-
+<app-filter-menu (checkbox)="categoryFilter($event)" [categories]="categories"></app-filter-menu>
+<ion-router-outlet id="filter"></ion-router-outlet>
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar color="success">
@@ -48,7 +49,7 @@
          Sort
         </ion-button>
 
-        <ion-button color="dark" expand="block" fill="clear">
+        <ion-button color="dark" expand="block" fill="clear" (click)="openFilter()">
           <ion-icon name="filter-outline" slot="end">
           </ion-icon>
          Filter

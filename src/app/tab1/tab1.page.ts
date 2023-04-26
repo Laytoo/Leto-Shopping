@@ -1,7 +1,8 @@
 import { Component ,OnInit,AfterContentChecked} from '@angular/core';
-import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, MenuController, ModalController, ToastController } from '@ionic/angular';
 import { SwiperOptions } from 'swiper';
 import { SortModalComponent } from '../components/sort-modal/sort-modal.component';
+import { CategoryModel } from '../models/categoryModal';
 import { ProductModel } from '../models/product-model';
 import { ProductService } from '../services/product.service';
 
@@ -32,11 +33,15 @@ export class Tab1Page implements OnInit ,AfterContentChecked{
   listArrayOfProducts:ProductModel[]=[];
   displayedList:ProductModel[]=[];
   currentPage=1;
+  filterCount=0;
+  filteredCategoryList:any[]=[];
+  categories: CategoryModel[] = [];
 
   constructor( private productService:ProductService,
     private loadingCtrl:LoadingController,
     private toastCtrl:ToastController,
-    private modalCtrl:ModalController) {}
+    private modalCtrl:ModalController,
+    private menuCtrl:MenuController) {}
 
 async ngOnInit() {
   const loader:HTMLIonLoadingElement=await this.loadingCtrl.create({
@@ -54,7 +59,9 @@ async ngOnInit() {
     await loader.dismiss().then();
     console.log(err);
 
-  })
+  });
+
+  this.categories = await this.productService.getAllCategories().toPromise();
 
   // this.banners = [
   //   {banner:'assets/images/001.jpg'},
@@ -182,12 +189,75 @@ sort(resultData: { role: string, data: any }) {
 
       else if (data === 'price-desc') {
           this.displayedList.sort((a, b) => {
-              
+
               return b.price - a.price;   // High To Low
           });
       }
   }
 
+
+}
+
+openFilter() {
+  this.menuCtrl.enable(true, 'filter').then();
+  this.menuCtrl.open('filter').then();
+}
+
+categoryFilter(ev: {name: string, selected: boolean}) {
+
+  // If the user clicked the filter for the first time and nothing is selected
+   if(ev.selected && this.filterCount === 0) {
+       this.filteredCategoryList.push(ev.name);
+       this.filterCount++;
+       this.displayedList = this.displayedList.filter(p => p.categories.some(cat => cat.name === ev.name));
+   }
+     // If the category selected is not present in the list of items
+   else if (ev.selected && this.filterCount >=1) {
+       const newArray = [...this.listArrayOfProducts];
+       this.filterCount++;
+
+       if (!this.filteredCategoryList.includes(ev.name)) {
+           this.filteredCategoryList.push(ev.name);
+
+           const product: ProductModel[] = newArray.filter(p => p.categories.some(cat => cat.name === ev.name));
+           let i;
+
+           product.forEach(p => {
+               i = this.displayedList.findIndex(prod => prod.id === p.id);
+
+               // If product is present in the array
+               if (i !== -1) {
+                   return;
+               } else  {
+                   this.displayedList = this.displayedList.concat(p);
+               }
+           });
+       } else {
+           return;
+       }
+   } // END OF ELSE IF
+
+  else if (!ev.selected && this.filterCount >= 1) {
+       const newArray = [...this.listArrayOfProducts];
+       this.filterCount--;
+
+       // Remove the category from the filter list array
+       this.filteredCategoryList = this.filteredCategoryList.filter(el => el !== ev.name);
+
+       if (this.filteredCategoryList.length > 0) {
+           this.displayedList = [];
+           this.filteredCategoryList.forEach(el => {
+               this.displayedList = this.displayedList.concat(
+                   newArray.filter(p => p.categories.some(cat => cat.name === el))
+               );
+           })
+       }
+
+       // Check if the filter count has reached 0, that means no filter is present now
+       if (this.filterCount === 0) {
+           this.displayedList = [...this.listArrayOfProducts];
+       }
+   }
 
 }
 

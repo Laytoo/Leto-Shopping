@@ -13,7 +13,7 @@ import { FilterMenuComponent } from './components/filter-menu/filter-menu.compon
 import { SortModalComponent } from './components/sort-modal/sort-modal.component';
 
 @NgModule({
-  declarations: [AppComponent, FilterMenuComponent,],
+  declarations: [AppComponent,],
   imports: [BrowserModule,
      IonicModule.forRoot(),
       AppRoutingModule,
