@@ -11,6 +11,10 @@ import { FormsModule } from '@angular/forms';
 import { BackendInterceptor } from './services/backend.interceptor';
 import { FilterMenuComponent } from './components/filter-menu/filter-menu.component';
 import { SortModalComponent } from './components/sort-modal/sort-modal.component';
+import { CartViewwComponent } from './components/cart-vieww/cart-vieww.component';
+import { Storage } from '@ionic/storage';
+
+
 
 @NgModule({
   declarations: [AppComponent,],
@@ -19,12 +23,15 @@ import { SortModalComponent } from './components/sort-modal/sort-modal.component
       AppRoutingModule,
       HttpClientModule,
       FormsModule,
+
+
     ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   {
     provide:HTTP_INTERCEPTORS,
     useClass:BackendInterceptor,
     multi:true,
+
   }],
   bootstrap: [AppComponent],
 })

@@ -35,7 +35,7 @@
         </ion-button>
 
       </ion-buttons>
-      <ion-badge color="light" slot="end">@</ion-badge>
+      <ion-badge color="light" slot="end">{{count || 0}}</ion-badge>
     </ion-toolbar>
   </ion-header>
   <ion-content  [fullscreen]="true" style="position: relative;">
@@ -85,7 +85,7 @@
       <ion-col>
         <ion-list>
           <ion-item *ngFor="let prod of displayedList" class="item-entry"
-          (click)="loadingSpinner()" detail routerLink="/tabs/tab1/prod-detail/{{prod.id}}">
+          (click)="loadingSpinner()" detail routerLink="/tabs/tab1/product-detail/{{prod.id}}">
             <ion-thumbnail>
               <ion-img [src]="prod.images[0].src" alt="{{prod.name}}">
 

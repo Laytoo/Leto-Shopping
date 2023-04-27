@@ -5,6 +5,9 @@ import { SortModalComponent } from '../components/sort-modal/sort-modal.componen
 import { CategoryModel } from '../models/categoryModal';
 import { ProductModel } from '../models/product-model';
 import { ProductService } from '../services/product.service';
+import { CartService } from '../services/cart.service';
+import { map } from 'rxjs';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-tab1',
@@ -36,12 +39,16 @@ export class Tab1Page implements OnInit ,AfterContentChecked{
   filterCount=0;
   filteredCategoryList:any[]=[];
   categories: CategoryModel[] = [];
+  count:number;
 
   constructor( private productService:ProductService,
     private loadingCtrl:LoadingController,
     private toastCtrl:ToastController,
     private modalCtrl:ModalController,
-    private menuCtrl:MenuController) {}
+    private menuCtrl:MenuController,
+    private cartService:CartService) {
+      this.loadMoreData(null).then();
+    }
 
 async ngOnInit() {
   const loader:HTMLIonLoadingElement=await this.loadingCtrl.create({
@@ -62,6 +69,10 @@ async ngOnInit() {
   });
 
   this.categories = await this.productService.getAllCategories().toPromise();
+
+  this.cartService.cartData.pipe(map(data=>data.count)
+  ).subscribe(count=>this.count=count)
+
 
   // this.banners = [
   //   {banner:'assets/images/001.jpg'},

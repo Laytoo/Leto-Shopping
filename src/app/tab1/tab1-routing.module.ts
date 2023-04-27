@@ -9,7 +9,7 @@ const routes: Routes = [
     component: Tab1Page,
   },
   {
-    path: 'product-detail',
+    path: 'product-detail/:id',
     loadChildren: () => import('./product-detail/product-detail.module').then( m => m.ProductDetailPageModule),
     resolve:{product:ProdResolverService}
   }

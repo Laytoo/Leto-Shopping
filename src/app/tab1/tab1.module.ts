@@ -9,6 +9,9 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { SwiperModule } from 'swiper/angular';
 import { SortModalComponent } from '../components/sort-modal/sort-modal.component';
 import { FilterMenuComponent } from '../components/filter-menu/filter-menu.component';
+import { Storage } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular';
+
 
 @NgModule({
   imports: [
@@ -18,7 +21,11 @@ import { FilterMenuComponent } from '../components/filter-menu/filter-menu.compo
     ExploreContainerComponentModule,
     Tab1PageRoutingModule,
     SwiperModule,
+    
+
+
+
   ],
-  declarations: [Tab1Page,SortModalComponent,FilterMenuComponent]
+  declarations: [Tab1Page,SortModalComponent,FilterMenuComponent,]
 })
 export class Tab1PageModule {}
